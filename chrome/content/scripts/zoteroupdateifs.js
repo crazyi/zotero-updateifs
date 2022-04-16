@@ -644,8 +644,10 @@ Zotero.UpdateIFs.getIFs = async function (item){
             
                 var AllJour = Zotero.Utilities.xpath(html, xPathJour)[0].innerText;
                 var publicationTitle = item.getField('publicationTitle').
-                            replace('&', 'and').
-                            replace(' - ', '-'); 
+                            replace(/&/g, 'and').  // 替换&为and
+                        		replace(/ - /g, '-').
+                        		replace(/,/g, '').    // 替换逗号（，）
+                        		replace(/: /g, '-');  // 替换冒号空格（：）  全局替换代码源于@crazyi
                 var reg = '\n\t(.*)\n\t' + publicationTitle + '(更名\/剔除)(.*)'+ // 分组1序号
                                         '\n\t(.*)\n\t(.*)'+ // 分组7 ISSN，分组8文章数
                                         '\n\t(.*)\n\t(.*)'+ //分组7 5年平均分， 分组6 非自引分
